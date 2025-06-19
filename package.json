@@ -1,10 +1,30 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "book-notes",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "description": "A project for keeping book notes",
+  "keywords": [
+    "books"
+  ],
+  "homepage": "https://github.com/Skioulis/Book-Notes#readme",
+  "bugs": {
+    "url": "https://github.com/Skioulis/Book-Notes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Skioulis/Book-Notes.git"
+  },
+  "license": "ISC",
+  "author": "Skioulis",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "pg": "^8.16.1"
+  }
 }
