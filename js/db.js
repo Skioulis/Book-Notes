@@ -25,14 +25,7 @@ export async function ensureTablesExists() {
         bookimg   text
     );
   `;
-    try {
-        await pool.query(createBookTableQuery);
-        console.log('Table checked (created if not exists).');
-    } catch (err) {
-        console.error('Error ensuring table exists:', err);
-    }
-
-    const createNoteTableQuery = `
+   const createNoteTableQuery = `
     CREATE TABLE IF NOT EXISTS notes (
     id serial constraint notes_pk primary key,
     content text not null,
@@ -42,18 +35,16 @@ export async function ensureTablesExists() {
     );
     `;
 
+    await poolQuery(createBookTableQuery);
+    await poolQuery(createNoteTableQuery);
+
+    await pool.end()
+}
+async function poolQuery (query) {
     try {
-        await pool.query(createNoteTableQuery);
+        await pool.query(query);
         console.log('Table checked (created if not exists).');
     } catch (err) {
         console.error('Error ensuring table exists:', err);
     }
-    await pool.end()
 }
-
-
-
-
-
-
-
