@@ -21,8 +21,9 @@ export async function ensureTablesExists() {
         booktitle text not null, 
         summary text not null,
         dateread date not null,
-        rating    integer not null,
-        bookimg   text
+        rating integer not null,
+        bookimg text,
+        author text not null
     );
   `;
    const createNoteTableQuery = `
@@ -32,6 +33,7 @@ export async function ensureTablesExists() {
     bookid  integer not null
     constraint notes_books_id_fk
     references books(id)
+    on delete cascade
     );
     `;
 

@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
     const books = await getBooks();
 
     // res.json(books);
-    res.render("index.ejs");
+    res.render("index.ejs", {books: books});
 })
 
 app.listen(port, () => {
