@@ -1,9 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import pg from 'pg';
+import {ensureTablesExists} from "./js/db.js";
 
 const app = express();
 const port = 3000;
+
+
+
+await ensureTablesExists();
+
 
 const db = new pg.Client({
     user: "postgres",
