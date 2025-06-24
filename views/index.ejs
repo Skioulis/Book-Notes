@@ -1,5 +1,15 @@
 <%- include('partials/header.ejs'); -%>
 
-<button class="btn btn-secondary">test</button>
+<div class="container">
+    <h1>Fotis Fo</h1>
+
+    <% for(let book of books){%>
+
+    <p id="title<%=book.id%>">
+        <%= book.booktitle %>
+    </p>
+
+    <% } %>
+</div>
 
 <%- include('partials/footer.ejs'); -%>
