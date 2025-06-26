@@ -1,0 +1,4 @@
+
+https://sive.rs/book
+
+https://openlibrary.org/dev/docs/api/covers

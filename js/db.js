@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import pg from 'pg';
 
 const pool = new Pool({
     user: 'postgres',
@@ -42,6 +43,7 @@ export async function ensureTablesExists() {
 
     await pool.end()
 }
+
 async function poolQuery (query) {
     try {
         await pool.query(query);
@@ -49,4 +51,40 @@ async function poolQuery (query) {
     } catch (err) {
         console.error('Error ensuring table exists:', err);
     }
+}
+
+export async function getBooks () {
+    const db = new pg.Client({
+    user: "postgres",
+    host: "localhost",
+    database: "book-notes",
+    password: "123456",
+    port: 5432,
+});
+db.connect();
+    try {
+        let books = [];
+        const query = 'SELECT * FROM books';
+        const result = await db.query(query);
+        result.rows.forEach(row => {
+            books.push(row);
+        })
+
+        // console.log(books);
+        return books;
+
+
+
+    } catch (err) {
+        console.error('Error ensuring table exists:', err);
+    }
+    finally {
+        db.end();
+    }
+}
+
+export async function getImages (book) {
+    console.log(book);
+    book.bookimg = "1";
+    return book;
 }
