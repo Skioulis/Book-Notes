@@ -6,6 +6,9 @@ import ejs from 'ejs';
 
 const app = express();
 const port = 3000;
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 
 
 
@@ -53,13 +56,14 @@ app.get('/', async (req, res) => {
     //     }
     //
     // })
-    const body = await ejs.renderFile('./views/index.ejs', {books: books});
+    const body = await ejs.renderFile('views/pages/index.ejs', {books: books});
     res.render("layout.ejs", {body: body});
     // res.render("index.ejs", {books: books});
 })
 
-app.get('/add', (req, res) => {
-    res.render("add.ejs");
+app.get('/add', async (req, res) => {
+    const body = await ejs.renderFile('./views/pages/add.ejs');
+    res.render("layout.ejs", {body: body});
 })
 
 app.listen(port, () => {
