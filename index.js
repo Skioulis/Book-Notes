@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import * as db from "./js/db.js";
-
+import ejs from 'ejs';
 
 const app = express();
 const port = 3000;
@@ -53,10 +53,13 @@ app.get('/', async (req, res) => {
     //     }
     //
     // })
-    console.log(books);
-    // res.json(books);
-    // res.render("index.ejs", );
-    res.render("index.ejs", {books: books});
+    const body = await ejs.renderFile('./views/index.ejs', {books: books});
+    res.render("layout.ejs", {body: body});
+    // res.render("index.ejs", {books: books});
+})
+
+app.get('/add', (req, res) => {
+    res.render("add.ejs");
 })
 
 app.listen(port, () => {
