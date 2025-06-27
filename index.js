@@ -46,12 +46,13 @@ app.use(express.static("public"));
 app.get('/', async (req, res) => {
     const books = await db.getBooks();
 
-    books.forEach(book => {
-        if (book.bookimg === undefined || book.bookimg === null || book.bookimg === '') {
-            book = db.getImages(book);
-        }
-
-    })
+    // I will add it later
+    // books.forEach(book => {
+    //     if (book.bookimg === undefined || book.bookimg === null || book.bookimg === '') {
+    //         book = db.getImages(book);
+    //     }
+    //
+    // })
     console.log(books);
     // res.json(books);
     // res.render("index.ejs", );

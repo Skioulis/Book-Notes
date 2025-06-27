@@ -85,6 +85,6 @@ db.connect();
 
 export async function getImages (book) {
     console.log(book);
-    book.bookimg = "1";
+    // book.bookimg = "1";
     return book;
 }

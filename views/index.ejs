@@ -3,14 +3,41 @@
 <div class="container">
     <h1>Fotis Fotiadis Book list</h1>
     <h3>This is the book list page. The books here are sample data.</h3>
+    <hr>
 
-    <% for(let book of books){%>
+    <div class="container">
+        <section id="allBooks">
+            <div class="abook">
+                <% for(let book of books){%>
+                <div class="row">
+                    <div class="col-md-3">
+                        <figure>
+        <!-- TODO                    change later here-->
+                            <a href="#">
+                                <img src="images/test.jpg" width="125" loading="lazy" alt="You Can Negotiate Anything - by Herb Cohen">
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="col-md-9">
+                    <h3 id="title<%=book.id%>"> <%= book.booktitle %></h3>
+                <small> by <strong><%= book.author %></strong> Date read: <strong><%= book.dateread.toLocaleDateString() %></strong>
+                    enjoyed: <strong><%= book.rating %></strong> </small>
+                    </div>
+                    <div class="col-md-12">
+                        <p><%= book.summary %></p>
+                    </div>
+                </div>
 
-    <p id="title<%=book.id%>">
-        <%= book.booktitle %>
-    </p>
 
-    <% } %>
+
+
+                <% } %>
+            </div>
+        </section>
+
+    </div>
+
+
 </div>
 
 <%- include('partials/footer.ejs'); -%>
