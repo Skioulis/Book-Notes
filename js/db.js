@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import pg from 'pg';
+import { Book } from './Book.js';
 
 const pool = new Pool({
     user: 'postgres',
@@ -67,7 +68,7 @@ db.connect();
         const query = 'SELECT * FROM books';
         const result = await db.query(query);
         result.rows.forEach(row => {
-            books.push(row);
+            books.push(Book.fromObject(row));
         })
 
         // console.log(books);
@@ -85,6 +86,10 @@ db.connect();
 
 export async function getImages (book) {
     console.log(book);
+    // If book is not already a Book instance, convert it
+    if (!(book instanceof Book)) {
+        book = Book.fromObject(book);
+    }
     // book.bookimg = "1";
     return book;
 }
