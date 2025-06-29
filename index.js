@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import * as db from "./js/db.js";
+import * as openLibraryApi from "./js/openLibraryApi.js";
 import ejs from 'ejs';
 
 const app = express();
@@ -64,6 +65,34 @@ app.get('/', async (req, res) => {
 app.get('/add', async (req, res) => {
     const body = await ejs.renderFile('./views/pages/add.ejs');
     res.render("layout.ejs", {body: body});
+})
+
+app.post('/add', async (req, res) => {
+    try {
+        const { title, author, summary, dateread, rating } = req.body;
+
+        // Search for the book and get its cover image
+        const result = await openLibraryApi.searchBookAndGetCover(title, author);
+
+        // Prepare the book data
+        const bookData = {
+            title,
+            author,
+            summary,
+            dateread,
+            rating,
+            bookimg: result.success ? result.imagePath : null
+        };
+
+        // Add the book to the database
+        const newBook = await db.addBook(bookData);
+
+        // Redirect to the home page
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error adding book:', error);
+        res.status(500).send('An error occurred while adding the book');
+    }
 })
 
 app.listen(port, () => {

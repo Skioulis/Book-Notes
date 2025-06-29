@@ -42,7 +42,8 @@ export async function ensureTablesExists() {
     await poolQuery(createBookTableQuery);
     await poolQuery(createNoteTableQuery);
 
-    await pool.end()
+    // Don't end the pool here as it will be used by other functions
+    // await pool.end()
 }
 
 async function poolQuery (query) {
@@ -92,4 +93,47 @@ export async function getImages (book) {
     }
     // book.bookimg = "1";
     return book;
+}
+
+/**
+ * Adds a new book to the database.
+ * 
+ * @param {Object} bookData - The book data to add
+ * @return {Promise<Book>} A promise that resolves to the newly added Book
+ */
+export async function addBook(bookData) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+
+    try {
+        await db.connect();
+
+        const query = `
+            INSERT INTO books (booktitle, summary, dateread, rating, bookimg, author)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+        `;
+
+        const values = [
+            bookData.title,
+            bookData.summary,
+            bookData.dateread,
+            bookData.rating,
+            bookData.bookimg || null,
+            bookData.author
+        ];
+
+        const result = await db.query(query, values);
+        return Book.fromObject(result.rows[0]);
+    } catch (err) {
+        console.error('Error adding book:', err);
+        throw err;
+    } finally {
+        await db.end();
+    }
 }

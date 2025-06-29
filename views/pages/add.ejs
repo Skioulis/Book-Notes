@@ -3,17 +3,27 @@
     <form action="/add" method="post">
         <div class="form-group mb-2">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Book Title">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Book Title" required>
         </div>
 
         <div class="form-group mb-2">
-            <label for="Author">Author Name</label>
-            <input type="text" class="form-control" id="Author" placeholder="The Author">
+            <label for="author">Author Name</label>
+            <input type="text" class="form-control" id="author" name="author" placeholder="The Author" required>
+        </div>
+
+        <div class="form-group mb-2">
+            <label for="summary">Summary</label>
+            <textarea class="form-control" id="summary" name="summary" rows="4" placeholder="Book Summary" required></textarea>
+        </div>
+
+        <div class="form-group mb-2">
+            <label for="dateread">Date Read</label>
+            <input type="date" class="form-control" id="dateread" name="dateread" required>
         </div>
 
         <div class="form-group mb-2">
             <label for="rating">Rating</label>
-            <select class="form-control" id="rating">
+            <select class="form-control" id="rating" name="rating" required>
                 <option value="" disabled selected>Select rating</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -25,10 +35,9 @@
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
-
             </select>
         </div>
 
+        <button type="submit" class="btn btn-primary mt-3">Add Book</button>
     </form>
-
 </div>
