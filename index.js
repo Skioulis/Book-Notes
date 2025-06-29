@@ -4,6 +4,7 @@ import pg from 'pg';
 import * as db from "./js/db.js";
 import * as openLibraryApi from "./js/openLibraryApi.js";
 import ejs from 'ejs';
+import {getBookById} from "./js/db.js";
 
 const app = express();
 const port = 3000;
@@ -67,6 +68,13 @@ app.get('/add', async (req, res) => {
     res.render("layout.ejs", {body: body});
 })
 
+app.get('/book/:id', async (req, res) => {
+        const book = await db.getBookById(req.params.id);
+        const body = await ejs.renderFile('./views/pages/book.ejs', {book: book});
+        res.render("layout.ejs", {body: body});
+    }
+)
+
 app.post('/add', async (req, res) => {
     try {
         const { title, author, summary, dateread, rating } = req.body;
@@ -94,6 +102,11 @@ app.post('/add', async (req, res) => {
         res.status(500).send('An error occurred while adding the book');
     }
 })
+
+app.get('/book/:id', async (req, res) => {
+
+    }
+)
 
 app.listen(port, () => {
     console.log(`Server running @ http://localhost:${port}`);

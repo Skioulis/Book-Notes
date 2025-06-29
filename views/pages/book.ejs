@@ -1,0 +1,22 @@
+<div class="container">
+<div class="row">
+    <div class="col-md-3">
+        <figure>
+
+            <a href="/book/<%= book.id %>">
+                <img src="<%= book.bookimg %>" width="125" loading="lazy"
+                     alt="You Can Negotiate Anything - by Herb Cohen">
+            </a>
+        </figure>
+    </div>
+    <div class="col-md-9">
+        <h3 class="card-header" id="title<%=book.id%>"> <%= book.booktitle %></h3>
+        <small> by <strong><%= book.author %></strong> Date read: <strong><%= book.dateread.toLocaleDateString() %></strong>
+            enjoyed: <strong><%= book.rating %></strong> </small>
+    </div>
+    <div class="col-md-12">
+        <p><%= book.summary %></p>
+    </div>
+</div>
+
+</div>

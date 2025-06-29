@@ -66,7 +66,7 @@ export async function getBooks () {
 db.connect();
     try {
         let books = [];
-        const query = 'SELECT * FROM books';
+        const query = 'SELECT * FROM books order by dateread asc';
         const result = await db.query(query);
         result.rows.forEach(row => {
             books.push(Book.fromObject(row));
@@ -132,6 +132,30 @@ export async function addBook(bookData) {
         return Book.fromObject(result.rows[0]);
     } catch (err) {
         console.error('Error adding book:', err);
+        throw err;
+    } finally {
+        await db.end();
+    }
+}
+
+export async function getBookById(id) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+
+    try {
+        await db.connect();
+        const query = `
+            SELECT * FROM books WHERE id = $1
+        `;
+        const result = await db.query(query, [id]);
+        return Book.fromObject(result.rows[0]);
+    }catch (err){
+        console.error('Error connecting to database:', err);
         throw err;
     } finally {
         await db.end();
