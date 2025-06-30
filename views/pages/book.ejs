@@ -1,5 +1,11 @@
 <%- include('../partials/singleBookNavbar.ejs'); -%>
 <div class="container">
+    <style>
+        .book-textarea {
+            line-height: 1.5;
+            padding: 8px;
+        }
+    </style>
     <div class="row">
         <div class="card">
             <div class="col-md-12 card-header">
@@ -20,18 +26,22 @@
                         <small> by <strong><%= book.author %></strong> Date read:
                             <strong><%= book.dateread.toLocaleDateString() %></strong>
                             enjoyed: <strong><%= book.rating %></strong> </small>
-                        <p class="mt-3"><%= book.summary %></p>
+                        <textarea id="summaryText" class="mt-3 bookcontent book-textarea"
+                                  style="overflow:hidden;resize:none;width:100%;" disabled><%= book.summary %></textarea>
+
+
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container-fluid col-md-12">
-            <h3 class="card-header">Notes</h3>
+            <h3 class="card-header m-3">Notes</h3>
         <section id="allNotes">
             <% for (let note of notes) {%>
 <!--            TODO lets create the notes section-->
-            <p><%=note.content%></p>
+                <textarea class="mb-1 book-textarea" rows="<%= Math.ceil(note.content.length / 50) %>"
+                          style="overflow:hidden;resize:none;width:100%" disabled><%= note.content %></textarea>
             <%}%>
         </section>
         </div>
