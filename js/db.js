@@ -10,6 +10,8 @@ const pool = new Pool({
     port: 5432,
 });
 
+
+
 /**
  * Ensures that the required database tables `books` and `notes` exist.
  * If the tables do not exist, they are created with the specified schema.
@@ -160,4 +162,31 @@ export async function getBookById(id) {
     } finally {
         await db.end();
     }
+}
+
+export async function deleteBook(id) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+    db.connect();
+    try {
+        const query = `
+            DELETE FROM books WHERE id = $1
+        `;
+        await db.query(query, [id]);
+
+    } catch (err) {
+        console.error('Error deleting book:', err);
+        throw err;
+    } finally {
+        await db.end();
+    }
+}
+
+export async function getNotesByBookId(id) {
+
 }

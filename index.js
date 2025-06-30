@@ -103,10 +103,27 @@ app.post('/add', async (req, res) => {
     }
 })
 
-app.get('/book/:id', async (req, res) => {
+app.delete('/book/:id/delete', async (req, res) => {
+    await db.deleteBook(req.params.id);
+    res.redirect('/');
+})
 
+app.post('/book/:id/delete', async (req, res) => {
+    try {
+        await db.deleteBook(req.params.id);
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error deleting book:', error);
+        res.status(500).send('An error occurred while deleting the book');
     }
-)
+});
+
+app.get('/book/:id/edit', async (req, res) => {
+    const book = await db.getBookById(req.params.id);
+    const body = await ejs.renderFile('./views/pages/edit.ejs', {book: book});
+    res.render("layout.ejs", {body: body});
+})
+
 
 app.listen(port, () => {
     console.log(`Server running @ http://localhost:${port}`);
