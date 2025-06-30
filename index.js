@@ -4,7 +4,7 @@ import pg from 'pg';
 import * as db from "./js/db.js";
 import * as openLibraryApi from "./js/openLibraryApi.js";
 import ejs from 'ejs';
-import {getBookById} from "./js/db.js";
+
 
 const app = express();
 const port = 3000;
@@ -122,13 +122,49 @@ app.post('/book/:id/delete', async (req, res) => {
 
 app.get('/book/:id/edit', async (req, res) => {
     const book = await db.getBookById(req.params.id);
+    const notes = await db.getNotesByBookId(req.params.id);
 
-    console.log(notes);
     const body = await ejs.renderFile('./views/pages/edit.ejs', {
-        book: book
-
+        book: book,
+        notes: notes
     });
     res.render("layout.ejs", {body: body});
+})
+
+app.post('/book/:id/update', async (req, res) => {
+    try {
+        const { booktitle, author, summary, dateread, rating } = req.body;
+        const bookId = req.params.id;
+
+        // Get the current book to preserve the image
+        const currentBook = await db.getBookById(bookId);
+
+        // Prepare the book data
+        const bookData = {
+            booktitle,
+            author,
+            summary,
+            dateread,
+            rating,
+            bookimg: currentBook.bookimg
+        };
+
+        // Update the book in the database
+        await db.updateBook(bookId, bookData);
+
+        // Update notes if they were provided
+        if (req.body.notes) {
+            for (const [noteId, content] of Object.entries(req.body.notes)) {
+                await db.updateNote(noteId, content);
+            }
+        }
+
+        // Redirect to the book page
+        res.redirect(`/book/${bookId}`);
+    } catch (error) {
+        console.error('Error updating book:', error);
+        res.status(500).send('An error occurred while updating the book');
+    }
 })
 
 

@@ -19,7 +19,6 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link active" aria-current="page" href="/add-note">Add Note</a>
-                        <a class="nav-link active" aria-current="page" href="/book/<%= book.id %>/edit">Edit Book</a>
 
                         <form action="/book/<%= book.id %>/delete" method="POST" style="display: inline;">
                             <input type="hidden" name="_method" value="DELETE">

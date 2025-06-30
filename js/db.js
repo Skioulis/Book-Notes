@@ -218,3 +218,85 @@ export async function getNotesByBookId(id) {
 
     }
 }
+
+/**
+ * Updates an existing book in the database.
+ * 
+ * @param {number} id - The ID of the book to update
+ * @param {Object} bookData - The updated book data
+ * @return {Promise<Book>} A promise that resolves to the updated Book
+ */
+export async function updateBook(id, bookData) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+
+    try {
+        await db.connect();
+
+        const query = `
+            UPDATE books 
+            SET booktitle = $1, summary = $2, dateread = $3, rating = $4, bookimg = $5, author = $6
+            WHERE id = $7
+            RETURNING *
+        `;
+
+        const values = [
+            bookData.booktitle,
+            bookData.summary,
+            bookData.dateread,
+            bookData.rating,
+            bookData.bookimg || null,
+            bookData.author,
+            id
+        ];
+
+        const result = await db.query(query, values);
+        return Book.fromObject(result.rows[0]);
+    } catch (err) {
+        console.error('Error updating book:', err);
+        // throw err;
+    } finally {
+        await db.end();
+    }
+}
+
+/**
+ * Updates a note in the database.
+ * 
+ * @param {number} id - The ID of the note to update
+ * @param {string} content - The updated content of the note
+ * @return {Promise<Note>} A promise that resolves to the updated Note
+ */
+export async function updateNote(id, content) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+
+    try {
+        await db.connect();
+
+        const query = `
+            UPDATE notes 
+            SET content = $1
+            WHERE id = $2
+            RETURNING *
+        `;
+
+        const result = await db.query(query, [content, id]);
+        return Note.fromObject(result.rows[0]);
+    } catch (err) {
+        console.error('Error updating note:', err);
+        throw err;
+    } finally {
+        await db.end();
+    }
+}
