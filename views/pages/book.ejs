@@ -26,6 +26,14 @@
             </div>
         </div>
 
-
+        <div class="container-fluid col-md-12">
+            <h3 class="card-header">Notes</h3>
+        <section id="allNotes">
+            <% for (let note of notes) {%>
+<!--            TODO lets create the notes section-->
+            <p><%=note.content%></p>
+            <%}%>
+        </section>
+        </div>
     </div>
 </div>

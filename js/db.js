@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import pg from 'pg';
 import { Book } from './Book.js';
+import {Note} from "./Note.js";
 
 const pool = new Pool({
     user: 'postgres',
@@ -188,5 +189,32 @@ export async function deleteBook(id) {
 }
 
 export async function getNotesByBookId(id) {
+    const db = new pg.Client({
+        user: "postgres",
+        host: "localhost",
+        database: "book-notes",
+        password: "123456",
+        port: 5432,
+    });
+    db.connect();
 
+    try {
+        let notes = [];
+        const query = `
+            SELECT * FROM notes WHERE bookid = $1
+        `;
+        const result = await db.query(query, [id]);
+
+        result.rows.forEach(row => {
+        notes.push(Note.fromObject(row));
+    })
+
+        return notes;
+    }catch (err) {
+        console.error('Error ensuring table exists:', err);
+    }
+    finally {
+        db.end();
+
+    }
 }

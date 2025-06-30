@@ -70,7 +70,9 @@ app.get('/add', async (req, res) => {
 
 app.get('/book/:id', async (req, res) => {
         const book = await db.getBookById(req.params.id);
-        const body = await ejs.renderFile('./views/pages/book.ejs', {book: book});
+        const notes = await db.getNotesByBookId(req.params.id)
+
+        const body = await ejs.renderFile('./views/pages/book.ejs', {book: book , notes: notes});
         res.render("layout.ejs", {body: body});
     }
 )
@@ -120,7 +122,12 @@ app.post('/book/:id/delete', async (req, res) => {
 
 app.get('/book/:id/edit', async (req, res) => {
     const book = await db.getBookById(req.params.id);
-    const body = await ejs.renderFile('./views/pages/edit.ejs', {book: book});
+
+    console.log(notes);
+    const body = await ejs.renderFile('./views/pages/edit.ejs', {
+        book: book
+
+    });
     res.render("layout.ejs", {body: body});
 })
 

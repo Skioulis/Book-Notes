@@ -9,8 +9,9 @@
 
     <div class="container">
         <section id="allBooks">
-            <div class="abook">
+
                 <% for(let book of books){%>
+            <div class="abook mb-5">
                     <div class="container">
                         <div class="row">
                             <div class="card">
@@ -28,7 +29,7 @@
                                             </figure>
                                         </div>
                                         <div class="col-md-9">
-                                            <h3 class="card-header" id="title<%= book.id %>"> <%= book.booktitle %></h3>
+                                            <h3 class="card-header" id="title<%= book.id %>"><a class="titlenolink" href="/book/<%= book.id %>"> <%= book.booktitle %></a></h3>
                                             <small> by <strong><%= book.author %></strong> Date read:
                                                 <strong><%= book.dateread.toLocaleDateString() %></strong>
                                                 enjoyed: <strong><%= book.rating %></strong> </small>
@@ -42,9 +43,9 @@
 
 
 
-
-                <% } %>
             </div>
+                <% } %>
+
         </section>
 
     </div>
